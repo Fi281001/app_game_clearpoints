@@ -96,7 +96,7 @@ function App() {
           }
           return prev; // Trả về danh sách không thay đổi nếu số không còn
         });
-      }, 1000);
+      }, 400);
     } else {
       console.error(
         "Lỗi: Bạn đã nhấp sai thứ tự! Mong muốn: số",
@@ -149,6 +149,7 @@ function App() {
                 position: "absolute",
                 top: `${y}px`,
                 left: `${x}px`,
+                zIndex: num === currentNumber ? 9999 : points.length,
                 ...getButtonStyle(num),
               }}
               onClick={() => handleButtonClick(num)}
