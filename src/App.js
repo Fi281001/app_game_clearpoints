@@ -1,9 +1,13 @@
 import "./App.css";
 import { useState, useEffect } from "react";
+
 function App() {
   const [value, setValue] = useState(0);
-  const [time, setTime] = useState(30);
+  const [time, setTime] = useState(0);
   const [points, setPoints] = useState([]);
+  const [currentNumber, setCurrentNumber] = useState(1);
+  const [clickedNumbers, setClickedNumbers] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(true); // Thêm trạng thái để theo dõi
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -13,42 +17,50 @@ function App() {
     return array;
   };
 
-  const handleKeyDown = async (e) => {
-    if (e.key === "Enter") {
-      const numericValue = value === "" ? 0 : parseInt(value, 10);
-
-      // Kiểm tra điều kiện lỗi
-      if (numericValue < 1 || numericValue > 1000) {
-        alert("Giá trị phải nằm trong khoảng từ 1 đến 1000!");
-        handleRestart();
-      } else {
-        setValue(numericValue);
-        setPoints(
-          shuffleArray(Array.from({ length: numericValue }, (_, i) => i + 1))
-        );
-      }
+  const startGame = () => {
+    const numericValue = value === "" ? 0 : parseInt(value, 10);
+    // Kiểm tra điều kiện lỗi
+    if (numericValue < 1 || numericValue > 1000) {
+      alert("Giá trị phải nằm trong khoảng từ 1 đến 1000!");
+      setTime(0);
+    } else {
+      setPoints(
+        shuffleArray(Array.from({ length: numericValue }, (_, i) => i + 1))
+      );
+      setIsPlaying(true);
+      setTime(10);
     }
   };
 
   useEffect(() => {
+    let timer;
     if (time > 0) {
-      const timer = setInterval(() => {
+      timer = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
-      }, 1000); // Giảm 1 giây mỗi lần
-
-      // Cleanup interval khi component bị unmount hoặc thời gian kết thúc
-      return () => clearInterval(timer);
+      }, 1000);
+    } else {
+      setIsPlaying(false); // Đánh dấu là không còn chơi khi hết thời gian
+      if (points != 0) {
+        alert("you lose");
+        setValue("");
+        setIsPlaying(false);
+        setPoints([]);
+        setClickedNumbers([]);
+        setTime(0);
+      }
     }
+
+    // Dọn dẹp interval khi component unmount hoặc time thay đổi
+    return () => clearInterval(timer);
   }, [time]);
+
   const handleRestart = () => {
-    setTime(30);
+    setTime(0);
     setValue(0);
     setPoints([]);
     setClickedNumbers([]);
+    setIsPlaying(false);
   };
-
-  const [currentNumber, setCurrentNumber] = useState(1);
-  const [clickedNumbers, setClickedNumbers] = useState([]);
 
   const handleButtonClick = (num) => {
     // check click theo số thứ tự
@@ -85,16 +97,14 @@ function App() {
       <div>
         <h1>LET'S PLAY</h1>
         <label>Points: </label>
-        <input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
+        <input value={value} onChange={(e) => setValue(e.target.value)} />
         <br />
         <label>Time: </label>
         <span>{time}s</span>
         <br />
-        <button onClick={handleRestart}>Restart</button>
+        <button onClick={isPlaying ? handleRestart : startGame}>
+          {isPlaying ? "Restart" : "Play"}
+        </button>
       </div>
 
       <div className="display">
