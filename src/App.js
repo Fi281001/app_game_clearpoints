@@ -52,13 +52,7 @@ function App() {
           text: "Try Agian",
           confirmButtonText: "OK",
         });
-        // setValue(0);
-        // setIsPlaying(false);
-        // setPoints([]);
-        // setClickedNumbers([]);
-        // setTime(0);
-        // setCurrentNumber(1);
-        // valueRef.current.focus();
+
         handleRestart();
       }
     }
@@ -74,13 +68,7 @@ function App() {
         text: "Congratulations!",
         confirmButtonText: "OK",
       });
-      // setIsPlaying(false);
-      // setPoints([]);
-      // setClickedNumbers([]);
-      // setValue(0);
-      // setTime(0);
-      // setCurrentNumber(1);
-      // valueRef.current.focus();
+
       handleRestart();
     }
   }, [points, time]);
@@ -153,8 +141,6 @@ function App() {
 
       <div className="display">
         {randomizedPositions.map(({ num, x, y }) => {
-          // const x = Math.random() * 250;
-          // const y = Math.random() * 250;
           return (
             <button
               key={num}
