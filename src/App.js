@@ -19,13 +19,12 @@ function App() {
 
   const startGame = () => {
     const numericValue = value === "" ? 0 : parseInt(value, 10);
-    // Kiểm tra điều kiện lỗi
+
     if (numericValue < 1 || numericValue > 1000) {
       Swal.fire({
         title: "The value must be greater than 1 and less than 1000",
         text: "Try Agian",
         confirmButtonText: "OK",
-        allowOutsideClick: false, // Ngăn người dùng đóng modal bằng cách nhấp ngoài
       });
       setValue(0);
       setTime(0);
@@ -52,19 +51,16 @@ function App() {
           title: "GAME OVER",
           text: "Try Agian",
           confirmButtonText: "OK",
-          allowOutsideClick: false, // Ngăn người dùng đóng modal bằng cách nhấp ngoài
         });
-        // alert("you lose");
-        setValue(0);
-        setIsPlaying(false);
-        setPoints([]);
-        setClickedNumbers([]);
-        setTime(0);
-        valueRef.current.focus();
+        // setValue(0);
+        // setIsPlaying(false);
+        // setPoints([]);
+        // setClickedNumbers([]);
+        // setTime(0);
+        // setCurrentNumber(1);
+        // valueRef.current.focus();
+        handleRestart();
       }
-      // else {
-      //   alert("you win");
-      // }
     }
 
     // Dọn dẹp interval khi component unmount hoặc time thay đổi
@@ -78,12 +74,14 @@ function App() {
         text: "Congratulations!",
         confirmButtonText: "OK",
       });
-      setIsPlaying(false);
-      setPoints([]);
-      setClickedNumbers([]);
-      setValue(0);
-      setTime(0);
-      valueRef.current.focus();
+      // setIsPlaying(false);
+      // setPoints([]);
+      // setClickedNumbers([]);
+      // setValue(0);
+      // setTime(0);
+      // setCurrentNumber(1);
+      // valueRef.current.focus();
+      handleRestart();
     }
   }, [points, time]);
 
@@ -93,6 +91,7 @@ function App() {
     setPoints([]);
     setClickedNumbers([]);
     setIsPlaying(false);
+    setCurrentNumber(1);
     valueRef.current.focus();
   };
 
